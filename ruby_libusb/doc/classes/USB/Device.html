@@ -1,0 +1,1176 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: USB::Device</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">USB::Device</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/hid_cpp.html">
+                hid.cpp
+                </a>
+        <br />
+                <a href="../../files/libusb_rb.html">
+                libusb.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+A class representing a <a href="../USB.html">USB</a> <a
+href="Device.html">Device</a> attached to the system. In <a
+href="../USB.html">USB</a>, devices have 1 or more configurations but only
+one can be active at a particular time. To get device objects, call
+USB::devices which will return all available devices on the system. To find
+a particular device, it&#8217;s usual to look for a particular
+Device::vendor_id Device::product_id combination. For human readable
+searching, Device::product_name and Device::manufacturer might be useful.
+</p>
+<p>
+An example:
+</p>
+<pre>
+  require 'libusb'
+
+  devices = USB::devices();
+  devices.each { |d|
+    puts &quot;Device vendor: #{d.vendor_id} product: #{d.product_id}&quot;
+  }
+</pre>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000019">children</a>&nbsp;&nbsp;
+      <a href="#M000035">close</a>&nbsp;&nbsp;
+      <a href="#M000010">configurations</a>&nbsp;&nbsp;
+      <a href="#M000011">current_configuration</a>&nbsp;&nbsp;
+      <a href="#M000032">current_configuration_value</a>&nbsp;&nbsp;
+      <a href="#M000024">device_class</a>&nbsp;&nbsp;
+      <a href="#M000017">device_num</a>&nbsp;&nbsp;
+      <a href="#M000026">device_protocol</a>&nbsp;&nbsp;
+      <a href="#M000025">device_subclass</a>&nbsp;&nbsp;
+      <a href="#M000021">device_version</a>&nbsp;&nbsp;
+      <a href="#M000016">dirname</a>&nbsp;&nbsp;
+      <a href="#M000013">endpoints</a>&nbsp;&nbsp;
+      <a href="#M000015">filename</a>&nbsp;&nbsp;
+      <a href="#M000009">get_value_for</a>&nbsp;&nbsp;
+      <a href="#M000014">hid?</a>&nbsp;&nbsp;
+      <a href="#M000012">interfaces</a>&nbsp;&nbsp;
+      <a href="#M000031">load_configurations</a>&nbsp;&nbsp;
+      <a href="#M000018">location</a>&nbsp;&nbsp;
+      <a href="#M000008">macro_maps</a>&nbsp;&nbsp;
+      <a href="#M000028">manufacturer</a>&nbsp;&nbsp;
+      <a href="#M000030">max_packet_size_for_endpoint_0</a>&nbsp;&nbsp;
+      <a href="#M000034">open</a>&nbsp;&nbsp;
+      <a href="#M000033">open?</a>&nbsp;&nbsp;
+      <a href="#M000023">product_id</a>&nbsp;&nbsp;
+      <a href="#M000027">product_name</a>&nbsp;&nbsp;
+      <a href="#M000029">serial_number</a>&nbsp;&nbsp;
+      <a href="#M000020">usb_version</a>&nbsp;&nbsp;
+      <a href="#M000022">vendor_id</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000009" class="method-detail">
+        <a name="M000009"></a>
+
+        <div class="method-heading">
+          <a href="#M000009" class="method-signature">
+          <span class="method-name">get_value_for</span><span class="method-args">(map_name, value_string)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The device class has maps of constants that are used interally and passed
+around as <a href="../CMacroValue.html">CMacroValue</a> constants. Normally
+this isn&#8217;t a problem but occasonally it&#8217;s useful to find a
+value for a particular constant.
+</p>
+<p>
+<tt>USB::Device::get_value_for(&quot;data_item_flags&quot;,
+&quot;InputOutputFeature::NONVOLATILE&quot;)</tt>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000009-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 170</span>
+170:     <span class="ruby-keyword kw">def</span> <span class="ruby-constant">Device</span>.<span class="ruby-identifier">get_value_for</span>(<span class="ruby-identifier">map_name</span>, <span class="ruby-identifier">value_string</span>)
+171:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@@macro_maps</span>[<span class="ruby-identifier">map_name</span>].<span class="ruby-identifier">invert</span>[<span class="ruby-identifier">value_string</span>]
+172:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
+
+        <div class="method-heading">
+          <a href="#M000008" class="method-signature">
+          <span class="method-name">macro_maps</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The device class has maps of constants that are used interally and passed
+around as <a href="../CMacroValue.html">CMacroValue</a> constants. This
+lets you access these maps (most of the time there should be no reason to
+do this though). The maps are stored as a hash of map names, containings
+maps betweens constants and their values
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000008-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 161</span>
+161:     <span class="ruby-keyword kw">def</span> <span class="ruby-constant">Device</span>.<span class="ruby-identifier">macro_maps</span>
+162:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@@macro_maps</span>
+163:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000019" class="method-detail">
+        <a name="M000019"></a>
+
+        <div class="method-heading">
+          <a href="#M000019" class="method-signature">
+          <span class="method-name">children</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+call-spec: children() -&gt; array of <a href="Device.html">Device</a>
+objects Returns all the chidren devices of this device (which HUBs have)
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000019-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000019-source">
+<pre>
+/*
+ * call-spec:
+ * children() -&gt; array of Device objects
+ * Returns all the chidren devices of this device (which HUBs have)
+ */
+VALUE device_children(VALUE self)
+{
+  VALUE result = rb_ary_new();
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  unsigned char i;
+  for(i = 0; i &lt; dev-&gt;num_children; i++) {
+    VALUE new_device = Data_Wrap_Struct(cDevice, NULL, NULL, dev-&gt;children[i]);
+    rb_ary_push(result, new_device);
+  }
+  return result;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000035" class="method-detail">
+        <a name="M000035"></a>
+
+        <div class="method-heading">
+          <a href="#M000035" class="method-signature">
+          <span class="method-name">close</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Closes the <a href="../USB.html">USB</a> device. In general libusb
+functions implictly close the device as soon as they are done operating on
+them. You can prevent this by explictly using open if you want
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000035-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000035-source">
+<pre>
+/*
+ * Closes the USB device.  In general libusb functions implictly close the
+ * device as soon as they are done operating on them.  You can prevent this by
+ * explictly using open if you want
+ */
+VALUE device_close(VALUE self)
+{
+  if(device_is_open(self) == Qfalse)
+  {
+    rb_raise(cException, &quot;Attempting to close an already closed USB device&quot;);
+  }
+  usb_dev_handle* handle;
+  Data_Get_Struct(rb_iv_get(self, &quot;@open_handle&quot;), usb_dev_handle, handle);
+  rb_iv_set(self, &quot;@open_handle&quot;, Qnil);
+  if(usb_close(handle) &lt; 0)
+    raise_usb_error();
+  return Qnil;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
+
+        <div class="method-heading">
+          <a href="#M000010" class="method-signature">
+          <span class="method-name">configurations</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns all the configurations available for this <a
+href="../USB.html">USB</a> device. Normally a device only has one
+configuration but occasonally more are possible. Only one configuration is
+active at one time.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000010-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 177</span>
+177:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">configurations</span>
+178:       <span class="ruby-ivar">@configurations</span> = <span class="ruby-identifier">load_configurations</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@configurations</span>.<span class="ruby-identifier">nil?</span>
+179:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@configurations</span>
+180:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000011" class="method-detail">
+        <a name="M000011"></a>
+
+        <div class="method-heading">
+          <a href="#M000011" class="method-signature">
+          <span class="method-name">current_configuration</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the current configuration object. Not that this requires
+communication with the device so it can be (slightly) expensive. The
+current configuration stores information about the power chacteristics of
+the device as well as interfaces to the device.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000011-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 186</span>
+186:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_configuration</span>
+187:       <span class="ruby-identifier">current_configuration_val</span> = <span class="ruby-identifier">current_configuration_value</span>
+188:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">configurations</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">value</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_configuration_val</span> }
+189:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000032" class="method-detail">
+        <a name="M000032"></a>
+
+        <div class="method-heading">
+          <a href="#M000032" class="method-signature">
+          <span class="method-name">current_configuration_value</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This returns the current configurtion number for the device. This requires
+a explict call to the device so the calling program must have appropiate
+permissions.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000032-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000032-source">
+<pre>
+/*
+ * This returns the current configurtion number for the device.  This requires a
+ * explict call to the device so the calling program must have appropiate
+ * permissions.
+ */
+VALUE device_current_configuration_value(VALUE self)
+{
+  ENSURE_OPEN_BEGIN(self);
+  char data;
+  int result = (usb_control_msg(handle, 0x80, USB_REQ_GET_CONFIGURATION, 0, 0, &amp;data, 1, 1000));
+  ENSURE_OPEN_END;
+  if(result &lt; 0)
+    raise_usb_error();
+  if(result != 1)
+    rb_raise(cException, &quot;Unexpected length %d from GET_CONFIGURATION&quot;, result);
+  return INT2NUM(data);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000024" class="method-detail">
+        <a name="M000024"></a>
+
+        <div class="method-heading">
+          <a href="#M000024" class="method-signature">
+          <span class="method-name">device_class</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the device class as a <a
+href="../CMacroValue.html">CMacroValue</a>. These classes are defined in
+the <a href="../USB.html">USB</a> spec although vendors can create their
+own. Often devices set this value to 0 and store the true value for this in
+the interfaces themselves
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000024-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000024-source">
+<pre>
+/*
+ * Returns the device class as a CMacroValue.  These classes are defined in the
+ * USB spec although vendors can create their own.  Often devices set this value
+ * to 0 and store the true value for this in the interfaces themselves
+ */
+VALUE device_device_class(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+
+  return MACRO_MAPPED_VALUE(cDevice, &quot;class_codes&quot;, dev-&gt;descriptor.bDeviceClass);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000017" class="method-detail">
+        <a name="M000017"></a>
+
+        <div class="method-heading">
+          <a href="#M000017" class="method-signature">
+          <span class="method-name">device_num</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the device num. This number is not unique - it may correspond to
+the device&#8217;s location in its particular hub but I&#8217;m not sure
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000017-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000017-source">
+<pre>
+/*
+ * Returns the device num.  This number is not unique - it may correspond to the
+ * device's location in its particular hub but I'm not sure
+ */
+VALUE device_device_num(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return INT2NUM(dev-&gt;devnum);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000026" class="method-detail">
+        <a name="M000026"></a>
+
+        <div class="method-heading">
+          <a href="#M000026" class="method-signature">
+          <span class="method-name">device_protocol</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the device protocol as a number. This is often set to 0 but the <a
+href="../USB.html">USB</a> spec contains meaning for this, depending on the
+device class
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000026-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000026-source">
+<pre>
+/*
+ * Returns the device protocol as a number.  This is often set to 0 but the USB
+ * spec contains meaning for this, depending on the device class
+ */
+VALUE device_device_protocol(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+
+  return INT2NUM(dev-&gt;descriptor.bDeviceProtocol);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000025" class="method-detail">
+        <a name="M000025"></a>
+
+        <div class="method-heading">
+          <a href="#M000025" class="method-signature">
+          <span class="method-name">device_subclass</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the device subclass a number. Certain device classes have subclass
+meanings specified in the <a href="../USB.html">USB</a> spec
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000025-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000025-source">
+<pre>
+/* 
+ * Returns the device subclass a number.  Certain device classes have subclass
+ * meanings specified in the USB spec
+ */
+VALUE device_device_subclass(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+
+  return INT2NUM(dev-&gt;descriptor.bDeviceSubClass);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000021" class="method-detail">
+        <a name="M000021"></a>
+
+        <div class="method-heading">
+          <a href="#M000021" class="method-signature">
+          <span class="method-name">device_version</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the device version as a 3 element array (BCD value, as described in
+the <a href="../USB.html">USB</a> spec)
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000021-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000021-source">
+<pre>
+/*
+ * Returns the device version as a 3 element array (BCD value, as described in
+ * the USB spec)
+ */
+VALUE device_device_version(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return array_for_bcd_value(dev-&gt;descriptor.bcdDevice);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000016" class="method-detail">
+        <a name="M000016"></a>
+
+        <div class="method-heading">
+          <a href="#M000016" class="method-signature">
+          <span class="method-name">dirname() &rarr; String<br />
+</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the libusb device attribute dirname. At least in linux, this seems
+to correspond to the device&#8217;s directory in /proc/bus/usb
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000016-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000016-source">
+<pre>
+/*
+ * call-seq:
+ *   dirname() -&gt; String
+ *
+ * Returns the libusb device attribute dirname.  At least in linux, this seems
+ * to correspond to the device's directory in /proc/bus/usb
+ *
+ */
+VALUE device_dirname(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return rb_str_new2(dev-&gt;bus-&gt;dirname);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000013" class="method-detail">
+        <a name="M000013"></a>
+
+        <div class="method-heading">
+          <a href="#M000013" class="method-signature">
+          <span class="method-name">endpoints</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns all endpoints available in all configurations and interfaces. Some
+endpoints might not be active because they are part of an inactive
+configuration or inactive alternate interface.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000013-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000013-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 204</span>
+204:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">endpoints</span>
+205:       <span class="ruby-identifier">endpoint_lists</span> = <span class="ruby-identifier">interfaces</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">each</span><span class="ruby-operator">|</span> <span class="ruby-identifier">each</span>.<span class="ruby-identifier">endpoints</span> }
+206:       <span class="ruby-identifier">endpoint_lists</span>.<span class="ruby-identifier">flatten!</span>
+207:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">endpoint_lists</span>
+208:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000015" class="method-detail">
+        <a name="M000015"></a>
+
+        <div class="method-heading">
+          <a href="#M000015" class="method-signature">
+          <span class="method-name">filename() &rarr; String<br />
+</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the libusb device attribute filename. At least in linux, this seems
+to correspond to the device&#8217;s filename in /proc/bus/usb
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000015-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000015-source">
+<pre>
+/*
+ * call-seq:
+ *   filename() -&gt; String
+ *
+ * Returns the libusb device attribute filename.  At least in linux, this seems
+ * to correspond to the device's filename in /proc/bus/usb
+ *
+ */
+VALUE device_filename(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return rb_str_new2(dev-&gt;filename);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000014" class="method-detail">
+        <a name="M000014"></a>
+
+        <div class="method-heading">
+          <a href="#M000014" class="method-signature">
+          <span class="method-name">hid?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if any interface on the device, in any configuration or
+alternate interface, is a human interface device. Note that most useful
+human interface device related functions are within the <a
+href="Interface.html">Interface</a> object
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000014-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000014-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 213</span>
+213:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">hid?</span>
+214:       <span class="ruby-identifier">interfaces</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+215:         <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">i</span>.<span class="ruby-identifier">interface_class</span>.<span class="ruby-identifier">string_value</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;USB_CLASS_HID&quot;</span>)
+216:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>;
+217:         <span class="ruby-keyword kw">end</span>
+218:       }
+219:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>;
+220:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000012" class="method-detail">
+        <a name="M000012"></a>
+
+        <div class="method-heading">
+          <a href="#M000012" class="method-signature">
+          <span class="method-name">interfaces</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns all interfaces available in all configurtions for this device. Bear
+in mind that some interfaces might not be currently active, either because
+they belong to an inactive configuration or because they are not a
+currently active alternative interface.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000012-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 195</span>
+195:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">interfaces</span>
+196:       <span class="ruby-identifier">interface_lists</span> = <span class="ruby-identifier">configurations</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">each</span><span class="ruby-operator">|</span> <span class="ruby-identifier">each</span>.<span class="ruby-identifier">interfaces</span>}
+197:       <span class="ruby-identifier">interface_lists</span>.<span class="ruby-identifier">flatten!</span>
+198:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">interface_lists</span>
+199:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000031" class="method-detail">
+        <a name="M000031"></a>
+
+        <div class="method-heading">
+          <a href="#M000031" class="method-signature">
+          <span class="method-name">load_configurations</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Load the configurtions. Don&#8216;t use this function - use configurtions
+instead
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000031-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000031-source">
+<pre>
+/*
+ * Load the configurtions.  Don't use this function - use configurtions instead
+ */
+VALUE device_configurations(VALUE self)
+{
+  VALUE result = rb_ary_new();
+  struct usb_device *dev;
+  int c;
+  Data_Get_Struct(self, struct usb_device, dev);
+  for (c = 0; c &lt; dev-&gt;descriptor.bNumConfigurations; c++) {
+    VALUE new_configuration = Data_Wrap_Struct(cConfiguration, NULL, NULL, dev-&gt;config + c);
+    rb_iv_set(new_configuration, &quot;@device&quot;, self);
+    rb_ary_push(result, new_configuration);
+  }
+  return result;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000018" class="method-detail">
+        <a name="M000018"></a>
+
+        <div class="method-heading">
+          <a href="#M000018" class="method-signature">
+          <span class="method-name">location() &rarr; integer<br />
+</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the libusb device attribute location. Don&#8216;t know what the
+&quot;location&quot; corresponds to.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000018-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000018-source">
+<pre>
+/*
+ * call-seq:
+ *   location() -&gt; integer
+ *
+ * Returns the libusb device attribute location.  Don't know what the &quot;location&quot;
+ * corresponds to.
+ *
+ */
+VALUE device_location(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return INT2NUM(dev-&gt;bus-&gt;location);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000028" class="method-detail">
+        <a name="M000028"></a>
+
+        <div class="method-heading">
+          <a href="#M000028" class="method-signature">
+          <span class="method-name">manufacturer</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This function gets the string manufacturer name for the device. Note that
+this requires an explict call to the device which requires appropiate
+permissions to succeed. This function gets the string in the 1st language
+specified by the device. According to the <a href="../USB.html">USB</a>
+spec, this is an UTF8 string.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000028-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000028-source">
+<pre>
+/*
+ * This function gets the string manufacturer name for the device.  Note that this
+ * requires an explict call to the device which requires appropiate permissions
+ * to succeed.  This function gets the string in the 1st language specified by
+ * the device.  According to the USB spec, this is an UTF8 string.
+ */
+VALUE device_manufacturer(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return get_string_index(self, dev-&gt;descriptor.iManufacturer);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000030" class="method-detail">
+        <a name="M000030"></a>
+
+        <div class="method-heading">
+          <a href="#M000030" class="method-signature">
+          <span class="method-name">max_packet_size_for_endpoint_0</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This value determines the maximum size for the special control endpoint 0
+that all <a href="../USB.html">USB</a> devices must support. You
+shouldn&#8217;t have to use this endpoint except through provided functions
+so this shouldn&#8217;t be an issue
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000030-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000030-source">
+<pre>
+/* 
+ * This value determines the maximum size for the special control endpoint 0
+ * that all USB devices must support.  You shouldn't have to use this endpoint
+ * except through provided functions so this shouldn't be an issue
+ */
+VALUE device_max_packet_size_for_endpoint_0(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+
+  return INT2NUM(dev-&gt;descriptor.bMaxPacketSize0);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000034" class="method-detail">
+        <a name="M000034"></a>
+
+        <div class="method-heading">
+          <a href="#M000034" class="method-signature">
+          <span class="method-name">open</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Opens the usb device. The functions of libusb do this implictly when
+necessary so in general this is something you shouldn&#8217;t need to do by
+hand.
+</p>
+<p>
+If you call open, you should call close
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000034-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000034-source">
+<pre>
+/*
+ * Opens the usb device.  The functions of libusb do this implictly when
+ * necessary so in general this is something you shouldn't need to do by hand.
+ * 
+ * If you call open, you should call close
+ */
+VALUE device_open(VALUE self)
+{
+  if(device_is_open(self) == Qtrue)
+  {
+    rb_raise(cException, &quot;USB device is already open&quot;);
+  }
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  usb_dev_handle* handle = usb_open(dev);
+  if(handle == NULL)
+    raise_usb_error();
+  rb_iv_set(self, &quot;@open_handle&quot;, Data_Wrap_Struct(rb_cObject, NULL, NULL, handle));
+  return Qnil;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000033" class="method-detail">
+        <a name="M000033"></a>
+
+        <div class="method-heading">
+          <a href="#M000033" class="method-signature">
+          <span class="method-name">open?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if the device is open. In general, this library handles
+opening and closing devices for you so this is something you should not
+need to check on.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000033-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000033-source">
+<pre>
+/*
+ * Returns true if the device is open.  In general, this library handles opening
+ * and closing devices for you so this is something you should not need to check
+ * on.
+ */
+VALUE device_is_open(VALUE self)
+{
+  if(rb_iv_get(self, &quot;@open_handle&quot;) == Qnil)
+    return Qfalse;
+  return Qtrue;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000023" class="method-detail">
+        <a name="M000023"></a>
+
+        <div class="method-heading">
+          <a href="#M000023" class="method-signature">
+          <span class="method-name">product_id</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the product id for the device
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000023-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000023-source">
+<pre>
+/*
+ * Returns the product id for the device
+ */
+VALUE device_product_id(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return INT2NUM(dev-&gt;descriptor.idProduct);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000027" class="method-detail">
+        <a name="M000027"></a>
+
+        <div class="method-heading">
+          <a href="#M000027" class="method-signature">
+          <span class="method-name">product_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This function gets the string product name for the device. Note that this
+requires an explict call to the device which requires appropiate
+permissions to succeed. This function gets the string in the 1st language
+specified by the device. According to the <a href="../USB.html">USB</a>
+spec, this is an UTF8 string.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000027-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000027-source">
+<pre>
+/*
+ * This function gets the string product name for the device.  Note that this
+ * requires an explict call to the device which requires appropiate permissions
+ * to succeed.  This function gets the string in the 1st language specified by
+ * the device.  According to the USB spec, this is an UTF8 string.
+ */
+VALUE device_product_name(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return get_string_index(self, dev-&gt;descriptor.iProduct);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000029" class="method-detail">
+        <a name="M000029"></a>
+
+        <div class="method-heading">
+          <a href="#M000029" class="method-signature">
+          <span class="method-name">serial_number</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This function gets the string serial number for the device. Note that this
+requires an explict call to the device which requires appropiate
+permissions to succeed. This function gets the string in the 1st language
+specified by the device. According to the <a href="../USB.html">USB</a>
+spec, this is an UTF8 string.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000029-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000029-source">
+<pre>
+/*
+ * This function gets the string serial number for the device.  Note that this
+ * requires an explict call to the device which requires appropiate permissions
+ * to succeed.  This function gets the string in the 1st language specified by
+ * the device.  According to the USB spec, this is an UTF8 string.
+ */
+VALUE device_serial_number(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return get_string_index(self, dev-&gt;descriptor.iSerialNumber);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000020" class="method-detail">
+        <a name="M000020"></a>
+
+        <div class="method-heading">
+          <a href="#M000020" class="method-signature">
+          <span class="method-name">usb_version</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the <a href="../USB.html">USB</a> version of this device as 3
+element array (BCD value, as described in the <a href="../USB.html">USB</a>
+spec
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000020-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000020-source">
+<pre>
+/*
+ * Returns the USB version of this device as 3 element array (BCD value, as
+ * described in the USB spec
+ */
+VALUE device_usb_version(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return array_for_bcd_value(dev-&gt;descriptor.bcdUSB);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000022" class="method-detail">
+        <a name="M000022"></a>
+
+        <div class="method-heading">
+          <a href="#M000022" class="method-signature">
+          <span class="method-name">vendor_id</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the vendor ID for a device.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000022-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000022-source">
+<pre>
+/*
+ * Returns the vendor ID for a device.
+ */
+VALUE device_vendor_id(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return INT2NUM(dev-&gt;descriptor.idVendor);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

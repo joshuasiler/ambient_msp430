@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>stop_interrupt_listening (USB::Endpoint)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/* 
+ * Under most circumstances it's better to use listen_for_interrputs than this
+ * method.  But if you call start_listening you must call stop_listening
+ */
+VALUE endpoint_stop_listening(VALUE self)
+{
+  char error_occured = 0;
+  struct usb_dev_handle *handle;
+  Data_Get_Struct(rb_iv_get(rb_iv_get(self, &quot;@device&quot;),&quot;@open_handle&quot;), struct usb_dev_handle, handle);
+  struct usb_interface_descriptor* interface;
+  
+  Data_Get_Struct(rb_iv_get(self,&quot;@interface&quot;), struct usb_interface_descriptor, interface);
+  pthread_t* thread;
+  Data_Get_Struct(rb_iv_get(self, &quot;@thread&quot;), pthread_t, thread);
+  
+  pthread_cancel(*thread);
+  free(thread);
+  rb_iv_set(self, &quot;@thread&quot;, Qnil);
+
+  if(usb_release_interface(handle, interface-&gt;bInterfaceNumber) &lt; 0) {
+    error_occured = 1;
+  }
+  rb_iv_set(rb_iv_get(self, &quot;@interface&quot;), &quot;@claimed&quot;, Qfalse);
+  device_close(rb_iv_get(self, &quot;@device&quot;));
+  if(error_occured)
+    raise_usb_error();
+  return Qnil;
+}</pre>
+</body>
+</html>

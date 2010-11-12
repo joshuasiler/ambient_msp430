@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: USB</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">USB</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/hid_cpp.html">
+                hid.cpp
+                </a>
+        <br />
+                <a href="../files/libusb_rb.html">
+                libusb.rb
+                </a>
+        <br />
+                <a href="../files/usbbasics_c.html">
+                usbbasics.c
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+A module for interacting with <a href="USB.html">USB</a> devices in a
+generic way. This library especially includes support for discovering HID
+interfaces. For some examples check out map_example.rb and mystery_data.rb.
+Here one to get you started through:
+</p>
+<pre>
+  require 'libusb'
+
+  # We want to find a device that supports the Keyboard k key.  Then we'll listen
+  # on this device for events and print out a message when K is pressed
+
+  # This creates a usage object representing the K key
+  k_usage = USB::Usage.find_usage_named(/Keyboard k/)
+
+  usable_interface = nil
+  # search through all usb devices
+  hid_device = USB::devices.detect { |d|
+    # get the current configuration
+    config = d.current_configuration
+
+    #get all the interfaces within that configuration
+    config.interfaces.each { |i|
+      #find a hid interface that supports the k key
+      if(i.hid? and i.current_alternative?)
+        # we must detach the device from the kernel to get its descriptor
+        i.detach_kernel
+        usable_interface = i if (i.all_input_usages.include?(k_usage))
+      end
+    }
+
+    # if we've found a usable interface, stop otherwise search the next device
+    usable_interface
+  }
+
+  raise &quot;Could not find a suitable device&quot; if usable_interface.nil?
+  puts &quot;Using device #{usable_interface.device.product_name}&quot;
+
+  # listen for incoming ReportData objects
+  usable_interface.listen_for_hid_interrupts {
+    while(1)
+      report_data = usable_interface.next_interrupt
+      value_for_k = report_data.get_usage_value(k_usage)
+      if(value_for_k.nil?)
+        puts &quot;Datagram did not contain k key.  Got these usages instead #{report_data.set_usages.inspect}&quot;
+      else
+        puts &quot;*****K set to value #{value_for_k}*****&quot;
+      end
+    end
+  }
+</pre>
+<p>
+There&#8217;s quite a few classes here so let me break it down a bit.
+</p>
+<p>
+<b><a href="USB/Device.html">Device</a></b> represents a particular <a
+href="USB.html">USB</a> device, although this device might have several
+different functions (for example a combination scanner printer keyboard
+massage chair). Use <a href="USB.html#M000005">USB.devices</a> or <a
+href="USB.html#M000006">USB.device_matching</a> to find these devices.
+Devices contain information that lets you find a particular device -
+strings and numbers that represent the vendor and product. Devices contain
+<a href="USB/Configuration.html">Configuration</a> objects.
+</p>
+<p>
+<b><a href="USB/Configuration.html">Configuration</a></b> represents a
+particular mode that a <a href="USB.html">USB</a> device might be in. In
+theory, a device could have several modes where it acts like something
+completely different (say a mouse mode and a scanner mode). Slighly more
+likely is a low-power mode and a high power mode with more features. These
+modes are always mutally exclusive and very few devices have them. Most of
+the time you should be able to get away with just calling
+current_configuration from the <a href="USB/Device.html">Device</a> object
+and ignoring the others. <a href="USB/Configuration.html">Configuration</a>
+objects contain <a href="USB/Interface.html">Interface</a> objects.
+</p>
+<p>
+<b><a href="USB/Interface.html">Interface</a></b> represents a particular
+function (like a scanner, or a hub, or a human interface device).
+Interfaces have some data that lets you find out what sort of feature they
+are (interface_class in particular) and often have subdescriptors that give
+you more information about this particular feature. The only type
+that&#8217;s well supported right now is Human <a
+href="USB/Interface.html">Interface</a> Devices (HIDs). Most hid specific
+functions are in the <a href="USB/Interface.html">Interface</a> class.
+Interfaces contain <a href="USB/Endpoint.html">Endpoint</a> objects which
+are mechanisms for communicating with the <a href="USB.html">USB</a>
+device.
+</p>
+<p>
+<b><a href="USB/Endpoint.html">Endpoint</a></b> is a class representing a
+channel of communication to a <a href="USB.html">USB</a> device. There are
+various types of endpoints defined in the spec but the only one well
+supported right now are Interrupt Input endpoints (of particular use for
+HID devices).
+</p>
+<p>
+<b><a href="USB/ReportDescriptor.html">ReportDescriptor</a></b> is
+something <a href="USB.html">USB</a> HID devices have, and it&#8217;s
+accessed by using the hid_descriptor methods in the <a
+href="USB/Interface.html">Interface</a> class. A hid_descriptor defines
+several <a href="USB/Report.html">Report</a> objects that the <a
+href="USB.html">USB</a> HID device might send to or receive from the host.
+</p>
+<p>
+<b><a href="USB/Report.html">Report</a></b> is a part of a hid descriptor.
+A report can have both an input and output component. Reports contain
+functions for parsing datapackets from the hid device (althogh these are
+usually best accessed indirectly through the <a
+href="USB/ReportData.html">ReportData</a> object) and also <a
+href="USB/InputOutputFeature.html">InputOutputFeature</a> objects which
+contain metadata about each element in the <a
+href="USB/Report.html">Report</a>.
+</p>
+<p>
+<b><a href="USB/InputOutputFeature.html">InputOutputFeature</a></b> is a
+single set of releated fields within a report. They can have metadata with
+regard to the size and contents of the report. One of the most useful bits
+of metadata is <a href="USB/Usage.html">Usage</a> objects, which correspond
+to particular tiny features (like a button for the letter K, or a Battery
+led) that the device supports. <a href="USB/Usage.html">Usage</a> meanings
+are defined in the HID spec.
+</p>
+<p>
+<b><a href="USB/Usage.html">Usage</a></b> objects represent usages and give
+some handy methods for parsing them.
+</p>
+<p>
+<b><a href="USB/ReportData.html">ReportData</a></b> represents a single
+data packet from a <a href="USB.html">USB</a> hid device. It has functions
+for accessing that data (parsed according to the <a
+href="USB/ReportDescriptor.html">ReportDescriptor</a>). These objects are
+created by the <a href="USB/Interface.html">Interface</a> method
+listen_for_hid_interrupts
+</p>
+<p>
+<b><a href="USB/UsageListener.html">UsageListener</a></b> is a small handy
+class for people who want to listen for a partciular set of usages from a
+HID device.
+</p>
+<p>
+Copyright 2006 Michael Hewner
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000006">device_matching</a>&nbsp;&nbsp;
+      <a href="#M000005">devices</a>&nbsp;&nbsp;
+      <a href="#M000007">load_devices</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+    <div id="class-list">
+      <h3 class="section-bar">Classes and Modules</h3>
+
+      Class <a href="USB/Configuration.html" class="link">USB::Configuration</a><br />
+Class <a href="USB/Device.html" class="link">USB::Device</a><br />
+Class <a href="USB/Endpoint.html" class="link">USB::Endpoint</a><br />
+Class <a href="USB/InputOutputFeature.html" class="link">USB::InputOutputFeature</a><br />
+Class <a href="USB/Interface.html" class="link">USB::Interface</a><br />
+Class <a href="USB/Report.html" class="link">USB::Report</a><br />
+Class <a href="USB/ReportData.html" class="link">USB::ReportData</a><br />
+Class <a href="USB/ReportDescriptor.html" class="link">USB::ReportDescriptor</a><br />
+Class <a href="USB/Usage.html" class="link">USB::Usage</a><br />
+Class <a href="USB/UsageListener.html" class="link">USB::UsageListener</a><br />
+Class <a href="USB/UsbException.html" class="link">USB::UsbException</a><br />
+
+    </div>
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000006" class="method-detail">
+        <a name="M000006"></a>
+
+        <div class="method-heading">
+          <a href="#M000006" class="method-signature">
+          <span class="method-name">device_matching</span><span class="method-args">(vendor_id, product_id)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a device matching the specified vendor and product id, otherwise
+and exception is thrown
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000006-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000006-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 128</span>
+128:   <span class="ruby-keyword kw">def</span> <span class="ruby-constant">USB</span>.<span class="ruby-identifier">device_matching</span>(<span class="ruby-identifier">vendor_id</span>, <span class="ruby-identifier">product_id</span>)
+129:     <span class="ruby-identifier">result</span> = <span class="ruby-constant">USB</span><span class="ruby-operator">::</span><span class="ruby-identifier">devices</span>.<span class="ruby-identifier">detect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span> <span class="ruby-identifier">d</span>.<span class="ruby-identifier">vendor_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">vendor_id</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">d</span>.<span class="ruby-identifier">product_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">product_id</span>}
+130:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">UsbException</span>(<span class="ruby-node">&quot;No device matching vendor id #{vendor_id} and product_id #{product_id} found&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">nil?</span>
+131:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">result</span>
+132:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000005" class="method-detail">
+        <a name="M000005"></a>
+
+        <div class="method-heading">
+          <a href="#M000005" class="method-signature">
+          <span class="method-name">devices</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Get the current <a href="USB.html">USB</a> devices. Note that this does not
+reload the device list on subsquent calls - if you want and updated picture
+of <a href="USB.html">USB</a> devices you should call <a
+href="USB.html#M000007">load_devices</a> to manually reload them
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000005-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 121</span>
+121:   <span class="ruby-keyword kw">def</span> <span class="ruby-constant">USB</span>.<span class="ruby-identifier">devices</span>
+122:     <span class="ruby-identifier">load_devices</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-ivar">@@devices</span>.<span class="ruby-identifier">nil?</span>) 
+123:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@@devices</span>
+124:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000007" class="method-detail">
+        <a name="M000007"></a>
+
+        <div class="method-heading">
+          <a href="#M000007" class="method-signature">
+          <span class="method-name">load_devices</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This is called implictly when you require libusb. It gets all the current
+devices. It returns if true if the devices have changed since last load.
+</p>
+<p>
+You can use this function if you need to get any newly added usb devices,
+but onece you use it stop using any old <a href="USB.html">USB</a> devoce
+objects you mights still have around
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000007-source">
+<pre>
+/*
+ * This is called implictly when you require libusb.  It gets all the current
+ * devices.  It returns if true if the devices have changed since last load.
+ *
+ * You can use this function if you need to get any newly added usb devices, but
+ * onece you use it stop using any old USB devoce objects you mights still have
+ * around
+ */
+VALUE load_devices()
+{
+  int num_buses_changed = usb_find_busses();
+  int num_devices_changed = usb_find_devices();
+  if(num_buses_changed || num_devices_changed)
+  {
+    struct usb_bus *bus;
+    struct usb_device *dev;
+    VALUE result = rb_ary_new();
+    for (bus = usb_busses; bus; bus = bus-&gt;next) {
+      for (dev = bus-&gt;devices; dev; dev = dev-&gt;next) {
+        VALUE new_device = Data_Wrap_Struct(cDevice, NULL, NULL, dev);
+        rb_ary_push(result, new_device);
+      }
+    }
+    rb_cv_set(module, &quot;@@devices&quot;, result);
+    return Qtrue;
+  }
+  return Qfalse;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

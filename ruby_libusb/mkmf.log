@@ -1,0 +1,26 @@
+find_library: checking for main() in -lusb... -------------------- yes
+
+"gcc -o conftest -I. -I/usr/lib/ruby/1.8/i486-linux  -Wall -g -O2  -fPIC conftest.c  -L"/usr/lib"      -lruby1.8-static -lusb  -lpthread -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+
+/*top*/
+int main() { return 0; }
+int t() { main(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for main() in -lhidparse... -------------------- yes
+
+"gcc -o conftest -I. -I/usr/lib/ruby/1.8/i486-linux -I/home/hewner/buffaloplay/HIDParser/include  -Wall -g -O2  -fPIC conftest.c  -L"/home/hewner/buffaloplay/HIDParser/lib" -L"/usr/lib"     -lusb  -lruby1.8-static -lhidparse -lusb  -lpthread -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+
+/*top*/
+int main() { return 0; }
+int t() { main(); return 0; }
+/* end */
+
+--------------------
+

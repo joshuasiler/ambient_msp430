@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>claimable? (USB::Interface)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Attempts to briefly claim the interface and returns false if it fails.  You
+ * must claim an interface before you can get interrupts from it.  One of the
+ * reasons an interface claim may fail is that you need to detach_kernel
+ */
+VALUE interface_is_claimable(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  ENSURE_OPEN_BEGIN(rb_iv_get(self, &quot;@device&quot;));
+  if(usb_claim_interface(handle, interface-&gt;bInterfaceNumber) &lt; 0) {
+    ENSURE_OPEN_END;
+    return Qfalse;
+  } else {
+    if(usb_release_interface(handle, interface-&gt;bInterfaceNumber) &lt; 0) {
+      ENSURE_OPEN_END;
+      raise_usb_error();
+    }
+  }
+  ENSURE_OPEN_END;
+  return Qtrue;
+}</pre>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>product_name (USB::Device)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * This function gets the string product name for the device.  Note that this
+ * requires an explict call to the device which requires appropiate permissions
+ * to succeed.  This function gets the string in the 1st language specified by
+ * the device.  According to the USB spec, this is an UTF8 string.
+ */
+VALUE device_product_name(VALUE self)
+{
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  return get_string_index(self, dev-&gt;descriptor.iProduct);
+}</pre>
+</body>
+</html>

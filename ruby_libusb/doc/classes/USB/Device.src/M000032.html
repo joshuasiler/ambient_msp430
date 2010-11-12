@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>current_configuration_value (USB::Device)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * This returns the current configurtion number for the device.  This requires a
+ * explict call to the device so the calling program must have appropiate
+ * permissions.
+ */
+VALUE device_current_configuration_value(VALUE self)
+{
+  ENSURE_OPEN_BEGIN(self);
+  char data;
+  int result = (usb_control_msg(handle, 0x80, USB_REQ_GET_CONFIGURATION, 0, 0, &amp;data, 1, 1000));
+  ENSURE_OPEN_END;
+  if(result &lt; 0)
+    raise_usb_error();
+  if(result != 1)
+    rb_raise(cException, &quot;Unexpected length %d from GET_CONFIGURATION&quot;, result);
+  return INT2NUM(data);
+}</pre>
+</body>
+</html>

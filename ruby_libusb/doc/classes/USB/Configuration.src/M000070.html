@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>load_interfaces (USB::Configuration)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/* 
+ * Returns all the interfaces in the configuration.  Not all of these interfaces
+ * may be active - some might be alternate configurations
+ */
+VALUE configuration_interfaces(VALUE self) 
+{
+  VALUE result = rb_ary_new();
+  struct usb_config_descriptor* config;
+  int i, a;
+  Data_Get_Struct(self, struct usb_config_descriptor, config);
+  for(i = 0; i &lt; config-&gt;bNumInterfaces; i++) {
+    /* Loop through all of the alternate settings */
+    for (a = 0; a &lt; config-&gt;interface[i].num_altsetting; a++) {
+      VALUE new_interface = Data_Wrap_Struct(cInterface, NULL, NULL, config-&gt;interface[i].altsetting + a);
+      rb_iv_set(new_interface, &quot;@device&quot;, rb_iv_get(self, &quot;@device&quot;));
+      rb_iv_set(new_interface, &quot;@configuration&quot;, self);
+      rb_ary_push(result, new_interface);
+    }
+  }
+  return result;
+}</pre>
+</body>
+</html>

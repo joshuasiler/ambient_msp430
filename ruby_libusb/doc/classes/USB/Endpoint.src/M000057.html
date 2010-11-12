@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>start_interrupt_listening (USB::Endpoint)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Under most circustances it's better to use listen_for_interrupts than use
+ * this methods (just because it ensure that the device is closed when you're
+ * done.  But this starts a device listening, and from there you can use
+ * next_interrupt to get the data.  You must call interrupt_close if you call
+ * interrupt_open
+ */
+VALUE endpoint_start_listening(VALUE self)
+{
+  struct usb_endpoint_descriptor* e;
+  Data_Get_Struct(self, struct usb_endpoint_descriptor, e);
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(rb_iv_get(self,&quot;@interface&quot;), struct usb_interface_descriptor, interface);
+  struct interrupt_result_list* list;
+  if(rb_iv_get(self, &quot;@result_list&quot;) == Qnil) {
+    // this initializes the structure the thread will use to communicate
+    list = malloc(sizeof(struct interrupt_result_list));
+    list-&gt;head = NULL;
+    list-&gt;tail = NULL;
+    pthread_mutex_init(&amp;list-&gt;mutex, 0);
+    rb_iv_set(self, &quot;@result_list&quot;, Data_Wrap_Struct(rb_cObject, NULL, free_interrupt_list, list));
+  } else {
+    Data_Get_Struct(rb_iv_get(self,&quot;@result_list&quot;), struct interrupt_result_list, list);
+  }
+  Data_Get_Struct(rb_iv_get(self,&quot;@interface&quot;), struct usb_interface_descriptor, interface);
+
+
+  ENSURE_OPEN_BEGIN(rb_iv_get(self, &quot;@device&quot;));
+  if(usb_claim_interface(handle, interface-&gt;bInterfaceNumber) &lt; 0) {
+    ENSURE_OPEN_END;
+    raise_usb_error();
+  }
+  pthread_t* thread1 = malloc(sizeof(pthread_t));
+  int ret;
+  struct interrupt_thread_parameters* thread_params = malloc(sizeof(struct interrupt_thread_parameters));
+  thread_params-&gt;bEndpointAddress = e-&gt;bEndpointAddress;
+  thread_params-&gt;wMaxPacketSize = e-&gt;wMaxPacketSize;
+  thread_params-&gt;handle = handle;
+  thread_params-&gt;list = list;
+  ret = pthread_create(thread1, NULL, test_thread, thread_params);
+  rb_iv_set(self, &quot;@thread&quot;, Data_Wrap_Struct(rb_cObject, NULL, NULL, thread1));
+  rb_iv_set(rb_iv_get(self, &quot;@interface&quot;), &quot;@claimed&quot;, Qtrue);
+  return Qnil;
+}</pre>
+</body>
+</html>

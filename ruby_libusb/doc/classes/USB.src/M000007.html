@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>load_devices (USB)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * This is called implictly when you require libusb.  It gets all the current
+ * devices.  It returns if true if the devices have changed since last load.
+ *
+ * You can use this function if you need to get any newly added usb devices, but
+ * onece you use it stop using any old USB devoce objects you mights still have
+ * around
+ */
+VALUE load_devices()
+{
+  int num_buses_changed = usb_find_busses();
+  int num_devices_changed = usb_find_devices();
+  if(num_buses_changed || num_devices_changed)
+  {
+    struct usb_bus *bus;
+    struct usb_device *dev;
+    VALUE result = rb_ary_new();
+    for (bus = usb_busses; bus; bus = bus-&gt;next) {
+      for (dev = bus-&gt;devices; dev; dev = dev-&gt;next) {
+        VALUE new_device = Data_Wrap_Struct(cDevice, NULL, NULL, dev);
+        rb_ary_push(result, new_device);
+      }
+    }
+    rb_cv_set(module, &quot;@@devices&quot;, result);
+    return Qtrue;
+  }
+  return Qfalse;
+}</pre>
+</body>
+</html>

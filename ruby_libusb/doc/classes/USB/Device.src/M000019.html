@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>children (USB::Device)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * call-spec:
+ * children() -&gt; array of Device objects
+ * Returns all the chidren devices of this device (which HUBs have)
+ */
+VALUE device_children(VALUE self)
+{
+  VALUE result = rb_ary_new();
+  struct usb_device *dev;
+  Data_Get_Struct(self, struct usb_device, dev);
+  unsigned char i;
+  for(i = 0; i &lt; dev-&gt;num_children; i++) {
+    VALUE new_device = Data_Wrap_Struct(cDevice, NULL, NULL, dev-&gt;children[i]);
+    rb_ary_push(result, new_device);
+  }
+  return result;
+}</pre>
+</body>
+</html>

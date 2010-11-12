@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>next_interrupt_or_nil (USB::Endpoint)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Returns the next available interrupt as a ruby string or returns nil if no
+ * interrupt is currentl available
+ *
+ * This function should generally be used with a listen_for_interrupts block.
+ * It is possible to call it after the block has ended and return interrupts
+ * that were received while the block was open but not porcessed.
+ */
+VALUE endpoint_next_interrupt_or_nil(VALUE self)
+{
+  struct interrupt_result_list* list;
+  if(rb_iv_get(self, &quot;@result_list&quot;) == Qnil) return Qnil;
+  Data_Get_Struct(rb_iv_get(self,&quot;@result_list&quot;), struct interrupt_result_list, list);
+  if(list-&gt;head == NULL) {
+    return Qnil;
+  }
+  struct interrupt_result_list_entry* data = list-&gt;head;
+  pthread_mutex_lock(&amp;(list-&gt;mutex));
+  list-&gt;head = list-&gt;head-&gt;next;
+  if(list-&gt;head == NULL) {
+    list-&gt;tail = NULL;
+  }
+  pthread_mutex_unlock(&amp;(list-&gt;mutex));
+  if(data-&gt;data_size &lt; 0) {
+    //an error has occured
+    raise_usb_error();
+  }
+
+  VALUE result = rb_str_new(data-&gt;data, data-&gt;data_size);
+  return result;
+}</pre>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>start_listening (USB::UsageListener)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File libusb.rb, line 197</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">start_listening</span>
+      <span class="ruby-ivar">@interface</span>.<span class="ruby-identifier">listen_for_hid_interrupts</span> { <span class="ruby-operator">|</span> <span class="ruby-identifier">interface</span> <span class="ruby-operator">|</span>
+        <span class="ruby-keyword kw">while</span>(<span class="ruby-value">1</span>)
+          <span class="ruby-identifier">data</span> = <span class="ruby-identifier">interface</span>.<span class="ruby-identifier">next_interrupt</span>
+          <span class="ruby-ivar">@usages_to_watch</span>.<span class="ruby-identifier">each_pair</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">usage</span>, <span class="ruby-identifier">command</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">usage_val</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">get_usage_value</span>(<span class="ruby-identifier">usage</span>)
+            <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">usage_val</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">command</span>[<span class="ruby-value">0</span>])
+              <span class="ruby-identifier">command</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">usage_val</span>
+              <span class="ruby-identifier">command</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">usage_val</span>)
+            <span class="ruby-keyword kw">end</span>
+          }
+        <span class="ruby-keyword kw">end</span>
+      }
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

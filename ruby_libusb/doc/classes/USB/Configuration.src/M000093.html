@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>max_power (USB::Configuration)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Return the max power drawn from the device in milliamp units (not two
+ * milliamp units like described in the USB spec
+ */
+VALUE configuration_max_power(VALUE self)
+{
+  struct usb_config_descriptor* config;
+  Data_Get_Struct(self, struct usb_config_descriptor, config);
+  return INT2NUM(config-&gt;MaxPower * 2);
+}</pre>
+</body>
+</html>

@@ -1,0 +1,139 @@
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+
+    Methods
+
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Methods</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="rdoc-style.css" type="text/css" />
+  <base target="docwin" />
+</head>
+<body>
+<div id="index">
+  <h1 class="section-bar">Methods</h1>
+  <div id="index-entries">
+    <a href="classes/USB/Usage.html#M000098">== (USB::Usage)</a><br />
+    <a href="classes/USB/Interface.html#M000075">all_input_usages (USB::Interface)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000036">all_usages (USB::InputOutputFeature)</a><br />
+    <a href="classes/USB/Interface.html#M000082">alternate_setting (USB::Interface)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000044">array? (USB::InputOutputFeature)</a><br />
+    <a href="classes/SafeJSON.html#M000112">build_safe_json (SafeJSON)</a><br />
+    <a href="classes/USB/Device.html#M000019">children (USB::Device)</a><br />
+    <a href="classes/USB/Interface.html#M000084">claimable? (USB::Interface)</a><br />
+    <a href="classes/USB/Device.html#M000035">close (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000010">configurations (USB::Device)</a><br />
+    <a href="classes/USB/Interface.html#M000078">current_alternative (USB::Interface)</a><br />
+    <a href="classes/USB/Interface.html#M000067">current_alternative? (USB::Interface)</a><br />
+    <a href="classes/USB/Device.html#M000011">current_configuration (USB::Device)</a><br />
+    <a href="classes/USB/Configuration.html#M000086">current_configuration? (USB::Configuration)</a><br />
+    <a href="classes/USB/Device.html#M000032">current_configuration_value (USB::Device)</a><br />
+    <a href="classes/USB/ReportData.html#M000103">data_part (USB::ReportData)</a><br />
+    <a href="classes/USB/Interface.html#M000085">detach_kernel (USB::Interface)</a><br />
+    <a href="classes/USB/Device.html#M000024">device_class (USB::Device)</a><br />
+    <a href="classes/USB.html#M000006">device_matching (USB)</a><br />
+    <a href="classes/USB/Device.html#M000017">device_num (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000026">device_protocol (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000025">device_subclass (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000021">device_version (USB::Device)</a><br />
+    <a href="classes/USB.html#M000005">devices (USB)</a><br />
+    <a href="classes/USB/Device.html#M000016">dirname (USB::Device)</a><br />
+    <a href="classes/USB/Interface.html#M000074">endpoints (USB::Interface)</a><br />
+    <a href="classes/USB/Device.html#M000013">endpoints (USB::Device)</a><br />
+    <a href="classes/USB/Usage.html#M000096">extended_usage (USB::Usage)</a><br />
+    <a href="classes/USB/Device.html#M000015">filename (USB::Device)</a><br />
+    <a href="classes/USB/Usage.html#M000099">find_usage_named (USB::Usage)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000043">flag_set? (USB::InputOutputFeature)</a><br />
+    <a href="classes/USB/ReportDescriptor.html#M000063">get_report (USB::ReportDescriptor)</a><br />
+    <a href="classes/USB/ReportData.html#M000106">get_usage_value (USB::ReportData)</a><br />
+    <a href="classes/USB/Device.html#M000009">get_value_for (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000014">hid? (USB::Device)</a><br />
+    <a href="classes/USB/Interface.html#M000065">hid? (USB::Interface)</a><br />
+    <a href="classes/USB/Interface.html#M000072">hid_interrupt_input (USB::Interface)</a><br />
+    <a href="classes/USB/Interface.html#M000069">hid_report_descriptor (USB::Interface)</a><br />
+    <a href="classes/USB/Interface.html#M000070">hid_reports (USB::Interface)</a><br />
+    <a href="classes/USB/Report.html#M000111">id (USB::Report)</a><br />
+    <a href="classes/USB/Endpoint.html#M000053">input? (USB::Endpoint)</a><br />
+    <a href="classes/USB/Report.html#M000109">inputs (USB::Report)</a><br />
+    <a href="classes/USB/Interface.html#M000077">interface_class (USB::Interface)</a><br />
+    <a href="classes/USB/Interface.html#M000079">interface_string (USB::Interface)</a><br />
+    <a href="classes/USB/Device.html#M000012">interfaces (USB::Device)</a><br />
+    <a href="classes/USB/Configuration.html#M000087">interfaces (USB::Configuration)</a><br />
+    <a href="classes/USB/Endpoint.html#M000056">interval (USB::Endpoint)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000037">length (USB::InputOutputFeature)</a><br />
+    <a href="classes/USB/Interface.html#M000071">listen_for_hid_interrupts (USB::Interface)</a><br />
+    <a href="classes/USB/Endpoint.html#M000049">listen_for_interrupts (USB::Endpoint)</a><br />
+    <a href="classes/USB/Device.html#M000031">load_configurations (USB::Device)</a><br />
+    <a href="classes/USB.html#M000007">load_devices (USB)</a><br />
+    <a href="classes/USB/Interface.html#M000076">load_endpoints (USB::Interface)</a><br />
+    <a href="classes/USB/Interface.html#M000064">load_hid_report_descriptor (USB::Interface)</a><br />
+    <a href="classes/USB/Configuration.html#M000089">load_interfaces (USB::Configuration)</a><br />
+    <a href="classes/USB/ReportDescriptor.html#M000060">load_reports (USB::ReportDescriptor)</a><br />
+    <a href="classes/USB/Device.html#M000018">location (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000008">macro_maps (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000028">manufacturer (USB::Device)</a><br />
+    <a href="classes/USB/Endpoint.html#M000055">max_packet_size (USB::Endpoint)</a><br />
+    <a href="classes/USB/Device.html#M000030">max_packet_size_for_endpoint_0 (USB::Device)</a><br />
+    <a href="classes/USB/Configuration.html#M000093">max_power (USB::Configuration)</a><br />
+    <a href="classes/USB/UsageListener.html#M000045">new (USB::UsageListener)</a><br />
+    <a href="classes/CMacroValue.html#M000002">new (CMacroValue)</a><br />
+    <a href="classes/USB/ReportData.html#M000100">new (USB::ReportData)</a><br />
+    <a href="classes/USB/Interface.html#M000073">next_interrupt (USB::Interface)</a><br />
+    <a href="classes/USB/Endpoint.html#M000050">next_interrupt (USB::Endpoint)</a><br />
+    <a href="classes/USB/Endpoint.html#M000059">next_interrupt_or_nil (USB::Endpoint)</a><br />
+    <a href="classes/USB/Interface.html#M000083">number (USB::Interface)</a><br />
+    <a href="classes/USB/Endpoint.html#M000054">number (USB::Endpoint)</a><br />
+    <a href="classes/USB/UsageListener.html#M000046">on_usage_value_change (USB::UsageListener)</a><br />
+    <a href="classes/USB/Device.html#M000034">open (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000033">open? (USB::Device)</a><br />
+    <a href="classes/USB/Endpoint.html#M000052">output? (USB::Endpoint)</a><br />
+    <a href="classes/USB/Report.html#M000110">outputs (USB::Report)</a><br />
+    <a href="classes/SafeJSON.html#M000113">parse (SafeJSON)</a><br />
+    <a href="classes/USB/Device.html#M000023">product_id (USB::Device)</a><br />
+    <a href="classes/USB/Device.html#M000027">product_name (USB::Device)</a><br />
+    <a href="classes/USB/Interface.html#M000081">protocol (USB::Interface)</a><br />
+    <a href="files/devices_rb.html#M000001">remap_hid (devices.rb)</a><br />
+    <a href="classes/USB/Configuration.html#M000092">remote_wakeup? (USB::Configuration)</a><br />
+    <a href="classes/USB/ReportData.html#M000104">report (USB::ReportData)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000038">report_count (USB::InputOutputFeature)</a><br />
+    <a href="classes/USB/ReportData.html#M000102">report_id (USB::ReportData)</a><br />
+    <a href="classes/USB/ReportData.html#M000101">report_id? (USB::ReportData)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000039">report_size (USB::InputOutputFeature)</a><br />
+    <a href="classes/USB/ReportDescriptor.html#M000062">reports (USB::ReportDescriptor)</a><br />
+    <a href="classes/USB/Configuration.html#M000091">self_powered? (USB::Configuration)</a><br />
+    <a href="classes/USB/Device.html#M000029">serial_number (USB::Device)</a><br />
+    <a href="classes/USB/ReportData.html#M000105">set_usages (USB::ReportData)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000041">set_usages_for_data (USB::InputOutputFeature)</a><br />
+    <a href="classes/USB/Endpoint.html#M000057">start_interrupt_listening (USB::Endpoint)</a><br />
+    <a href="classes/USB/UsageListener.html#M000047">start_listening (USB::UsageListener)</a><br />
+    <a href="classes/USB/Endpoint.html#M000058">stop_interrupt_listening (USB::Endpoint)</a><br />
+    <a href="classes/CMacroValue.html#M000003">string_value (CMacroValue)</a><br />
+    <a href="classes/USB/Interface.html#M000080">subclass (USB::Interface)</a><br />
+    <a href="classes/USB/Usage.html#M000097">to_s (USB::Usage)</a><br />
+    <a href="classes/USB/Interface.html#M000066">to_s (USB::Interface)</a><br />
+    <a href="classes/USB/ReportData.html#M000108">to_s (USB::ReportData)</a><br />
+    <a href="classes/USB/Configuration.html#M000088">to_s (USB::Configuration)</a><br />
+    <a href="classes/USB/Endpoint.html#M000048">to_s (USB::Endpoint)</a><br />
+    <a href="classes/CMacroValue.html#M000004">to_s (CMacroValue)</a><br />
+    <a href="classes/USB/Endpoint.html#M000051">type (USB::Endpoint)</a><br />
+    <a href="classes/USB/Interface.html#M000068">usable? (USB::Interface)</a><br />
+    <a href="classes/USB/Usage.html#M000094">usage (USB::Usage)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000040">usage_for_field (USB::InputOutputFeature)</a><br />
+    <a href="classes/USB/Usage.html#M000095">usage_page (USB::Usage)</a><br />
+    <a href="classes/USB/Device.html#M000020">usb_version (USB::Device)</a><br />
+    <a href="classes/USB/ReportDescriptor.html#M000061">uses_report_id? (USB::ReportDescriptor)</a><br />
+    <a href="classes/USB/Configuration.html#M000090">value (USB::Configuration)</a><br />
+    <a href="classes/USB/ReportData.html#M000107">values (USB::ReportData)</a><br />
+    <a href="classes/USB/InputOutputFeature.html#M000042">values_for_data (USB::InputOutputFeature)</a><br />
+    <a href="classes/USB/Device.html#M000022">vendor_id (USB::Device)</a><br />
+  </div>
+</div>
+</body>
+</html>

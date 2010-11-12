@@ -1,0 +1,907 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: USB::Interface</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">USB::Interface</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/hid_cpp.html">
+                hid.cpp
+                </a>
+        <br />
+                <a href="../../files/libusb_rb.html">
+                libusb.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+A interface contains data about a certian function or feature that a device
+implements (like say being a HUB or a human interface device. A particular
+configurtion may have several different interfaces, and some might not be
+comptable with other. These is represented by the <a
+href="Interface.html#M000078">current_alternative</a> field, which selects
+between multiple interfaces with the same interface id.
+</p>
+<p>
+Each interface might have several endpoints that correspond to the
+interface&#8217;s function.
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000075">all_input_usages</a>&nbsp;&nbsp;
+      <a href="#M000082">alternate_setting</a>&nbsp;&nbsp;
+      <a href="#M000084">claimable?</a>&nbsp;&nbsp;
+      <a href="#M000078">current_alternative</a>&nbsp;&nbsp;
+      <a href="#M000067">current_alternative?</a>&nbsp;&nbsp;
+      <a href="#M000085">detach_kernel</a>&nbsp;&nbsp;
+      <a href="#M000074">endpoints</a>&nbsp;&nbsp;
+      <a href="#M000065">hid?</a>&nbsp;&nbsp;
+      <a href="#M000072">hid_interrupt_input</a>&nbsp;&nbsp;
+      <a href="#M000069">hid_report_descriptor</a>&nbsp;&nbsp;
+      <a href="#M000070">hid_reports</a>&nbsp;&nbsp;
+      <a href="#M000077">interface_class</a>&nbsp;&nbsp;
+      <a href="#M000079">interface_string</a>&nbsp;&nbsp;
+      <a href="#M000071">listen_for_hid_interrupts</a>&nbsp;&nbsp;
+      <a href="#M000076">load_endpoints</a>&nbsp;&nbsp;
+      <a href="#M000064">load_hid_report_descriptor</a>&nbsp;&nbsp;
+      <a href="#M000073">next_interrupt</a>&nbsp;&nbsp;
+      <a href="#M000083">number</a>&nbsp;&nbsp;
+      <a href="#M000081">protocol</a>&nbsp;&nbsp;
+      <a href="#M000080">subclass</a>&nbsp;&nbsp;
+      <a href="#M000066">to_s</a>&nbsp;&nbsp;
+      <a href="#M000068">usable?</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">configuration</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">device</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000075" class="method-detail">
+        <a name="M000075"></a>
+
+        <div class="method-heading">
+          <a href="#M000075" class="method-signature">
+          <span class="method-name">all_input_usages</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns all the usages specified within the hid interface&#8217;s input
+reports
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000075-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000075-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 398</span>
+398:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_input_usages</span>
+399:       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UsbException</span>, <span class="ruby-value str">&quot;Not a HID interface&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">hid?</span>
+400:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">hid_reports</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">inputs</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">all_usages</span> }}.<span class="ruby-identifier">flatten</span>
+401:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000082" class="method-detail">
+        <a name="M000082"></a>
+
+        <div class="method-heading">
+          <a href="#M000082" class="method-signature">
+          <span class="method-name">alternate_setting</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The alternate setting for this interface. When the current alternative is
+set to this number, this particular interface is active
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000082-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000082-source">
+<pre>
+/*
+ * The alternate setting for this interface.  When the current alternative is
+ * set to this number, this particular interface is active
+ */
+VALUE interface_alternate_setting(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  return INT2NUM(interface-&gt;bAlternateSetting);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000084" class="method-detail">
+        <a name="M000084"></a>
+
+        <div class="method-heading">
+          <a href="#M000084" class="method-signature">
+          <span class="method-name">claimable?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Attempts to briefly claim the interface and returns false if it fails. You
+must claim an interface before you can get interrupts from it. One of the
+reasons an interface claim may fail is that you need to <a
+href="Interface.html#M000085">detach_kernel</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000084-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000084-source">
+<pre>
+/*
+ * Attempts to briefly claim the interface and returns false if it fails.  You
+ * must claim an interface before you can get interrupts from it.  One of the
+ * reasons an interface claim may fail is that you need to detach_kernel
+ */
+VALUE interface_is_claimable(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  ENSURE_OPEN_BEGIN(rb_iv_get(self, &quot;@device&quot;));
+  if(usb_claim_interface(handle, interface-&gt;bInterfaceNumber) &lt; 0) {
+    ENSURE_OPEN_END;
+    return Qfalse;
+  } else {
+    if(usb_release_interface(handle, interface-&gt;bInterfaceNumber) &lt; 0) {
+      ENSURE_OPEN_END;
+      raise_usb_error();
+    }
+  }
+  ENSURE_OPEN_END;
+  return Qtrue;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000078" class="method-detail">
+        <a name="M000078"></a>
+
+        <div class="method-heading">
+          <a href="#M000078" class="method-signature">
+          <span class="method-name">current_alternative</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the current alternative number, which determines which alternate
+interface is active within all the interfaces of the same value. Generally
+it&#8217;s easier to call <a
+href="Interface.html#M000067">current_alternative?</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000078-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000078-source">
+<pre>
+/*
+ * Returns the current alternative number, which determines which alternate interface
+ * is active within all the interfaces of the same value.  Generally it's easier
+ * to call current_alternative?
+ */
+VALUE interface_current_alternative(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  char data;
+  
+  ENSURE_OPEN_BEGIN(rb_iv_get(self, &quot;@device&quot;));
+  int result = usb_control_msg(handle, 0x80, USB_REQ_GET_INTERFACE, 0, interface-&gt;bInterfaceNumber, &amp;data, 1, 1000);
+  ENSURE_OPEN_END;
+
+  if(result &lt; 0)
+    raise_usb_error();
+  if(result != 1)
+    rb_raise(cException, &quot;Unexpected length %d from GET_INTERFACE&quot;, result);
+
+  return INT2NUM(data);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000067" class="method-detail">
+        <a name="M000067"></a>
+
+        <div class="method-heading">
+          <a href="#M000067" class="method-signature">
+          <span class="method-name">current_alternative?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+returns true if the device is the currently selected alternative for all
+devices in the configuration with the same interface id
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000067-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000067-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 335</span>
+335:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_alternative?</span>
+336:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">current_alternative</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">alternate_setting</span>
+337:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000085" class="method-detail">
+        <a name="M000085"></a>
+
+        <div class="method-heading">
+          <a href="#M000085" class="method-signature">
+          <span class="method-name">detach_kernel</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+detaches the kernel from a particular <a href="../USB.html">USB</a>
+interface. The kernel tends to claim HID devices it recognises, so if you
+want to utilitize the device directly through libusb you must first detach
+the kernel. This stop the device from acting like a regular linux mouse or
+keyboard and let you utilize it directly
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000085-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000085-source">
+<pre>
+/*
+ * detaches the kernel from a particular USB interface.  The kernel tends to
+ * claim HID devices it recognises, so if you want to utilitize the device
+ * directly through libusb you must first detach the kernel.  This stop the
+ * device from acting like a regular linux mouse or keyboard and let you utilize
+ * it directly
+ */
+VALUE interface_detach_kernel(VALUE self)
+{
+  if(interface_is_claimable(self) == Qtrue) return Qnil;
+
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  ENSURE_OPEN_BEGIN(rb_iv_get(self, &quot;@device&quot;));
+  int result = usb_detach_kernel_driver_np(handle, interface-&gt;bInterfaceNumber);
+  ENSURE_OPEN_END;
+  if(result &lt; 0) {
+    raise_usb_error();
+  }
+  return Qnil;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000074" class="method-detail">
+        <a name="M000074"></a>
+
+        <div class="method-heading">
+          <a href="#M000074" class="method-signature">
+          <span class="method-name">endpoints</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+All the endpoints for this interface
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000074-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000074-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 392</span>
+392:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">endpoints</span>
+393:       <span class="ruby-ivar">@endpoints</span> = <span class="ruby-identifier">load_endpoints</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@endpoints</span>.<span class="ruby-identifier">nil?</span>
+394:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@endpoints</span>
+395:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000065" class="method-detail">
+        <a name="M000065"></a>
+
+        <div class="method-heading">
+          <a href="#M000065" class="method-signature">
+          <span class="method-name">hid?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if this interface is a human interface device Human interface
+devices have report descriptors that decide the format of their data
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000065-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000065-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 325</span>
+325:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">hid?</span>
+326:       <span class="ruby-keyword kw">return</span> (<span class="ruby-identifier">interface_class</span>.<span class="ruby-identifier">string_value</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;USB_CLASS_HID&quot;</span>)
+327:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000072" class="method-detail">
+        <a name="M000072"></a>
+
+        <div class="method-heading">
+          <a href="#M000072" class="method-signature">
+          <span class="method-name">hid_interrupt_input</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the first interrupt input endpoint in the interface, which I assume
+to be the correct interrupt for HID reports
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000072-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000072-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 379</span>
+379:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">hid_interrupt_input</span>
+380:       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UsbException</span>, <span class="ruby-value str">&quot;Not a HID interface&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">hid?</span>
+381:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">endpoints</span>.<span class="ruby-identifier">detect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">type</span>.<span class="ruby-identifier">string_value</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;USB_ENDPOINT_TYPE_INTERRUPT&quot;</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">input?</span> }
+382:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000069" class="method-detail">
+        <a name="M000069"></a>
+
+        <div class="method-heading">
+          <a href="#M000069" class="method-signature">
+          <span class="method-name">hid_report_descriptor</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+For a hig interface, this returns an <a
+href="ReportDescriptor.html">ReportDescriptor</a> object, which is a parsed
+representation of the HID report that the device returns
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000069-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000069-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 347</span>
+347:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">hid_report_descriptor</span>
+348:       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UsbException</span>, <span class="ruby-value str">&quot;Not a hid interface&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">hid?</span>
+349:       <span class="ruby-ivar">@report_descriptor</span> = <span class="ruby-identifier">load_hid_report_descriptor</span>() <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@report_descriptor</span>.<span class="ruby-identifier">nil?</span>
+350:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@report_descriptor</span>
+351:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000070" class="method-detail">
+        <a name="M000070"></a>
+
+        <div class="method-heading">
+          <a href="#M000070" class="method-signature">
+          <span class="method-name">hid_reports</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+All the report objects from the <a
+href="Interface.html#M000069">hid_report_descriptor</a>. A device may have
+serval reports, all with different report ids
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000070-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000070-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 355</span>
+355:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">hid_reports</span>
+356:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">hid_report_descriptor</span>.<span class="ruby-identifier">reports</span>
+357:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000077" class="method-detail">
+        <a name="M000077"></a>
+
+        <div class="method-heading">
+          <a href="#M000077" class="method-signature">
+          <span class="method-name">interface_class</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the interface class as a <a
+href="../CMacroValue.html">CMacroValue</a>. Some valid classes are:
+USB_CLASS_PER_INTERFACE USB_CLASS_AUDIO USB_CLASS_COMM USB_CLASS_HID
+USB_CLASS_PRINTER USB_CLASS_PTP USB_CLASS_MASS_STORAGE USB_CLASS_HUB
+USB_CLASS_DATA USB_CLASS_VENDOR_SPEC
+</p>
+<pre>
+  if(interface.interface_class.string_value == &quot;USB_CLASS_HID&quot;)
+    puts &quot;HID Device&quot;
+  end
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000077-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000077-source">
+<pre>
+/*
+ * Returns the interface class as a CMacroValue.  Some valid classes are:
+ * USB_CLASS_PER_INTERFACE USB_CLASS_AUDIO USB_CLASS_COMM USB_CLASS_HID 
+ * USB_CLASS_PRINTER USB_CLASS_PTP USB_CLASS_MASS_STORAGE USB_CLASS_HUB
+ * USB_CLASS_DATA USB_CLASS_VENDOR_SPEC
+ *
+ *   if(interface.interface_class.string_value == &quot;USB_CLASS_HID&quot;) 
+ *     puts &quot;HID Device&quot;
+ *   end
+ */
+VALUE interface_interface_class(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  return MACRO_MAPPED_VALUE(cDevice, &quot;class_codes&quot;, interface-&gt;bInterfaceClass);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000079" class="method-detail">
+        <a name="M000079"></a>
+
+        <div class="method-heading">
+          <a href="#M000079" class="method-signature">
+          <span class="method-name">interface_string</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+<a href="../USB.html">USB</a> interfaces may optionally have a string
+discriptor assoicated with them. This returns that descriptor
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000079-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000079-source">
+<pre>
+/* 
+ * USB interfaces may optionally have a string discriptor assoicated with them.
+ * This returns that descriptor
+ */
+VALUE interface_interface_string(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  return get_string_index(rb_iv_get(self, &quot;@device&quot;), interface-&gt;iInterface);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000071" class="method-detail">
+        <a name="M000071"></a>
+
+        <div class="method-heading">
+          <a href="#M000071" class="method-signature">
+          <span class="method-name">listen_for_hid_interrupts</span><span class="method-args">() {|self| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This corresponds to the listen_for_interrupts function in the <a
+href="Endpoint.html">Endpoint</a> class. Within the block the device is
+open and interrupts are being recorded into a queue by a seperate thread.
+You can get the next interrupt by using the next_interrput function.
+</p>
+<p>
+This function listens on the endpoint returned by <a
+href="Interface.html#M000072">hid_interrupt_input</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000071-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000071-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 365</span>
+365:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">listen_for_hid_interrupts</span>
+366:       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UsbException</span>, <span class="ruby-value str">&quot;Not a HID interface&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">hid?</span>
+367:       <span class="ruby-identifier">endpoint</span> = <span class="ruby-identifier">hid_interrupt_input</span>
+368:       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">UsbException</span>, <span class="ruby-value str">&quot;Cannot find input interrupt endpoint for this HID&quot;</span>) <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">endpoint</span>.<span class="ruby-identifier">nil?</span>) 
+369:       <span class="ruby-keyword kw">begin</span>
+370:         <span class="ruby-identifier">endpoint</span>.<span class="ruby-identifier">start_interrupt_listening</span>
+371:         <span class="ruby-keyword kw">yield</span>(<span class="ruby-keyword kw">self</span>)
+372:       <span class="ruby-keyword kw">ensure</span>
+373:         <span class="ruby-identifier">endpoint</span>.<span class="ruby-identifier">stop_interrupt_listening</span>
+374:       <span class="ruby-keyword kw">end</span>
+375:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000076" class="method-detail">
+        <a name="M000076"></a>
+
+        <div class="method-heading">
+          <a href="#M000076" class="method-signature">
+          <span class="method-name">load_endpoints</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Don&#8216;t use this. Call endpoints instead
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000076-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000076-source">
+<pre>
+/* 
+ * Don't use this.  Call endpoints instead
+ */
+VALUE interface_endpoints(VALUE self)
+{
+  VALUE result = rb_ary_new();
+  struct usb_interface_descriptor* interface;
+  int e;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  for(e = 0; e &lt; interface-&gt;bNumEndpoints; e++) {
+    struct usb_endpoint_descriptor *endpoint = interface-&gt;endpoint + e;
+    VALUE new_endpoint = Data_Wrap_Struct(cEndpoint, NULL, NULL, endpoint);
+    rb_iv_set(new_endpoint, &quot;@interface&quot;, self);
+    rb_iv_set(new_endpoint, &quot;@device&quot;, rb_iv_get(self, &quot;@device&quot;));
+    rb_ary_push(result, new_endpoint);
+  }
+  return result;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000064" class="method-detail">
+        <a name="M000064"></a>
+
+        <div class="method-heading">
+          <span class="method-name">load_hid_report_descriptor</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Do not use this. Use <a
+href="Interface.html#M000069">hid_report_descriptor</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000073" class="method-detail">
+        <a name="M000073"></a>
+
+        <div class="method-heading">
+          <a href="#M000073" class="method-signature">
+          <span class="method-name">next_interrupt</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a <a href="ReportData.html">ReportData</a> object which represents
+a single data packet sent from the device. Should be called from within a
+listen_for_hid_interrputs block
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000073-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000073-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 387</span>
+387:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">next_interrupt</span>
+388:       <span class="ruby-keyword kw">return</span> <span class="ruby-constant">ReportData</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">hid_interrupt_input</span>.<span class="ruby-identifier">next_interrupt</span>, <span class="ruby-identifier">hid_report_descriptor</span>)
+389:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000083" class="method-detail">
+        <a name="M000083"></a>
+
+        <div class="method-heading">
+          <a href="#M000083" class="method-signature">
+          <span class="method-name">number</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The numer of this interface. Interfaces may have the same value - in that
+case they are differentiated by their alternate setting and only 1
+interface may be active at a particular time
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000083-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000083-source">
+<pre>
+/*
+ * The numer of this interface.  Interfaces may have the same value - in that
+ * case they are differentiated by their alternate setting and only 1 interface
+ * may be active at a particular time
+ */
+VALUE interface_number(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  return INT2NUM(interface-&gt;bInterfaceNumber);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000081" class="method-detail">
+        <a name="M000081"></a>
+
+        <div class="method-heading">
+          <a href="#M000081" class="method-signature">
+          <span class="method-name">protocol</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Gets the protocol assicated with this interface as an int. This is often 0
+but certian <a href="../USB.html">USB</a> speced interface classes
+assocaite a particular meaning with this value
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000081-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000081-source">
+<pre>
+/*
+ * Gets the protocol assicated with this interface as an int.  This is often 0 but certian
+ * USB speced interface classes assocaite a particular meaning with this value
+ */
+VALUE interface_protocol(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  return INT2NUM(interface-&gt;bInterfaceProtocol);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000080" class="method-detail">
+        <a name="M000080"></a>
+
+        <div class="method-heading">
+          <a href="#M000080" class="method-signature">
+          <span class="method-name">subclass</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Gets the subclass with this interface as an int. This is often 0 but
+certian <a href="../USB.html">USB</a> speced interface classes assocaite a
+particular meaning with this value
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000080-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000080-source">
+<pre>
+/*
+ * Gets the subclass with this interface as an int.  This is often 0 but certian
+ * USB speced interface classes assocaite a particular meaning with this value
+ */
+VALUE interface_subclass(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  return INT2NUM(interface-&gt;bInterfaceSubClass);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000066" class="method-detail">
+        <a name="M000066"></a>
+
+        <div class="method-heading">
+          <a href="#M000066" class="method-signature">
+          <span class="method-name">to_s</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000066-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000066-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 329</span>
+329:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
+330:       <span class="ruby-keyword kw">return</span> <span class="ruby-node">&quot;Interface #{interface_string} class #{interface_class} subclass #{subclass} protocol #{protocol} alternate setting        #{alternate_setting} number #{number} is usable #{usable?}&quot;</span>
+331:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000068" class="method-detail">
+        <a name="M000068"></a>
+
+        <div class="method-heading">
+          <a href="#M000068" class="method-signature">
+          <span class="method-name">usable?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if this interface is in the currently active configuration and
+it;s the current alternative
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000068-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000068-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 341</span>
+341:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">usable?</span>
+342:       <span class="ruby-keyword kw">return</span> (<span class="ruby-identifier">current_alternative?</span> <span class="ruby-keyword kw">and</span> <span class="ruby-ivar">@configuration</span>.<span class="ruby-identifier">current_configuration?</span>)
+343:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

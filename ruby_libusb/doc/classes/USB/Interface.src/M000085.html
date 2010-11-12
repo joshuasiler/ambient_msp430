@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>detach_kernel (USB::Interface)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * detaches the kernel from a particular USB interface.  The kernel tends to
+ * claim HID devices it recognises, so if you want to utilitize the device
+ * directly through libusb you must first detach the kernel.  This stop the
+ * device from acting like a regular linux mouse or keyboard and let you utilize
+ * it directly
+ */
+VALUE interface_detach_kernel(VALUE self)
+{
+  if(interface_is_claimable(self) == Qtrue) return Qnil;
+
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  ENSURE_OPEN_BEGIN(rb_iv_get(self, &quot;@device&quot;));
+  int result = usb_detach_kernel_driver_np(handle, interface-&gt;bInterfaceNumber);
+  ENSURE_OPEN_END;
+  if(result &lt; 0) {
+    raise_usb_error();
+  }
+  return Qnil;
+}</pre>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>interface_class (USB::Interface)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Returns the interface class as a CMacroValue.  Some valid classes are:
+ * USB_CLASS_PER_INTERFACE USB_CLASS_AUDIO USB_CLASS_COMM USB_CLASS_HID 
+ * USB_CLASS_PRINTER USB_CLASS_PTP USB_CLASS_MASS_STORAGE USB_CLASS_HUB
+ * USB_CLASS_DATA USB_CLASS_VENDOR_SPEC
+ *
+ *   if(interface.interface_class.string_value == &quot;USB_CLASS_HID&quot;) 
+ *     puts &quot;HID Device&quot;
+ *   end
+ */
+VALUE interface_interface_class(VALUE self)
+{
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(self, struct usb_interface_descriptor, interface);
+  return MACRO_MAPPED_VALUE(cDevice, &quot;class_codes&quot;, interface-&gt;bInterfaceClass);
+}</pre>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>build_safe_json (SafeJSON)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File json.rb, line 7</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-constant">SafeJSON</span>.<span class="ruby-identifier">build_safe_json</span>
+    <span class="ruby-identifier">ret</span> = <span class="ruby-keyword kw">nil</span>
+    <span class="ruby-identifier">waiter</span> = <span class="ruby-value str">''</span>
+    <span class="ruby-identifier">waiter</span>.<span class="ruby-identifier">extend</span>(<span class="ruby-constant">MonitorMixin</span>)
+    <span class="ruby-identifier">wait_cond</span> = <span class="ruby-identifier">waiter</span>.<span class="ruby-identifier">new_cond</span>
+    
+    <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">start</span> <span class="ruby-keyword kw">do</span>
+      <span class="ruby-identifier">$SAFE</span> = <span class="ruby-value">4</span>
+      <span class="ruby-identifier">ret</span> = <span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">json</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/([&quot;'])\s*:\s*(['&quot;0-9tfn\[{])/</span>){<span class="ruby-node">&quot;#{$1}=&gt;#{$2}&quot;</span>})
+      }
+      <span class="ruby-identifier">waiter</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword kw">do</span>
+        <span class="ruby-identifier">wait_cond</span>.<span class="ruby-identifier">signal</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">waiter</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword kw">do</span>
+      <span class="ruby-identifier">wait_cond</span>.<span class="ruby-identifier">wait_while</span> { <span class="ruby-identifier">ret</span>.<span class="ruby-identifier">nil?</span> }
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">ret</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

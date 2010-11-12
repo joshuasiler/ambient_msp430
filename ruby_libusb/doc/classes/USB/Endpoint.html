@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: USB::Endpoint</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">USB::Endpoint</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/libusb_rb.html">
+                libusb.rb
+                </a>
+        <br />
+                <a href="../../files/hid_cpp.html">
+                hid.cpp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+All data that comes from or to a <a href="../USB.html">USB</a> device
+passes through an endpoint. All devices have an implict <a
+href="Endpoint.html">Endpoint</a> 0 Control endpoint where all the
+predefined <a href="../USB.html">USB</a> requests flow and can define a
+number of additional endpoints (15 input and 15 ouput for full/high speed
+devices or 2 for low speed devices).
+</p>
+<p>
+Currently ruby usb only has support for interrupt in endpoints. Hopefully
+more endpoint support will be coming soon!
+</p>
+<pre>
+ mystery_device = USB.device_matching(0x046e, 0x530a)
+ endpoint = mystery_device.endpoints.detect { |e|
+   e.type.string_value == &quot;USB_ENDPOINT_TYPE_INTERRUPT&quot; and
+   e.input? }
+ endpoint.interface.detach_kernel
+ endpoint.listen_for_interrupts {
+   while(1)
+     puts endpoint.next_interrupt.unpack(&quot;B*&quot;)
+   end
+ }
+</pre>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000053">input?</a>&nbsp;&nbsp;
+      <a href="#M000056">interval</a>&nbsp;&nbsp;
+      <a href="#M000049">listen_for_interrupts</a>&nbsp;&nbsp;
+      <a href="#M000055">max_packet_size</a>&nbsp;&nbsp;
+      <a href="#M000050">next_interrupt</a>&nbsp;&nbsp;
+      <a href="#M000059">next_interrupt_or_nil</a>&nbsp;&nbsp;
+      <a href="#M000054">number</a>&nbsp;&nbsp;
+      <a href="#M000052">output?</a>&nbsp;&nbsp;
+      <a href="#M000057">start_interrupt_listening</a>&nbsp;&nbsp;
+      <a href="#M000058">stop_interrupt_listening</a>&nbsp;&nbsp;
+      <a href="#M000048">to_s</a>&nbsp;&nbsp;
+      <a href="#M000051">type</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">interface</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000053" class="method-detail">
+        <a name="M000053"></a>
+
+        <div class="method-heading">
+          <a href="#M000053" class="method-signature">
+          <span class="method-name">input?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if the endpoint is an input endpoint (input in this cases,
+means from the perspective of the host so input endpoints transmit data
+from usb devices to the computer)
+</p>
+<p>
+Control endpoints return false.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000053-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000053-source">
+<pre>
+/*
+ * Returns true if the endpoint is an input endpoint (input in this cases, means
+ * from the perspective of the host so input endpoints transmit data from usb
+ * devices to the computer)
+ *
+ * Control endpoints return false.
+ */
+VALUE endpoint_is_input(VALUE self)
+{
+  struct usb_endpoint_descriptor* e;
+  Data_Get_Struct(self, struct usb_endpoint_descriptor, e);
+  if((e-&gt;bmAttributes &amp; USB_ENDPOINT_TYPE_MASK) == USB_ENDPOINT_TYPE_CONTROL)
+    return Qfalse;
+  if(USB_ENDPOINT_DIR_MASK &amp; e-&gt;bEndpointAddress)
+    return Qtrue;
+  else
+    return Qfalse;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000056" class="method-detail">
+        <a name="M000056"></a>
+
+        <div class="method-heading">
+          <a href="#M000056" class="method-signature">
+          <span class="method-name">interval</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This value&#8217;s meaning depends on endpoint type. It could be the max
+latency for polling interupt endpoints, the interval for polling isync
+endpoints, or max NAK rate for bulk OUT/ control endpoints
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000056-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000056-source">
+<pre>
+/* 
+ * This value's meaning depends on endpoint type.  It could be the max latency for polling interupt endpoints, the
+ * interval for polling isync endpoints, or max NAK rate for bulk OUT/ control endpoints
+ */
+VALUE endpoint_interval(VALUE self)
+{
+  struct usb_endpoint_descriptor* e;
+  Data_Get_Struct(self, struct usb_endpoint_descriptor, e);
+
+  return INT2NUM(e-&gt;bInterval);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000049" class="method-detail">
+        <a name="M000049"></a>
+
+        <div class="method-heading">
+          <a href="#M000049" class="method-signature">
+          <span class="method-name">listen_for_interrupts</span><span class="method-args">() {|self| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This is the preferred way to listen for interrupts. It take a block which
+is passed the endpoint. The device is kept open for the block and then
+closed when block ends.
+</p>
+<p>
+Internally, a C thread is spawned which continiously waits for interrupts
+and puts them in a queue. Therefore, there is no danger of interrupt values
+being &quot;lost&quot; if not handled immediately. If interrupts are not
+removed from the queue with <a
+href="Endpoint.html#M000050">next_interrupt</a> however, they will consume
+memory.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000049-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000049-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 260</span>
+260:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">listen_for_interrupts</span>
+261:       <span class="ruby-keyword kw">begin</span>
+262:       <span class="ruby-identifier">start_interrupt_listening</span>
+263:       <span class="ruby-keyword kw">yield</span>(<span class="ruby-keyword kw">self</span>)
+264:       <span class="ruby-keyword kw">ensure</span>
+265:         <span class="ruby-identifier">stop_interrupt_listening</span>
+266:       <span class="ruby-keyword kw">end</span>
+267:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000055" class="method-detail">
+        <a name="M000055"></a>
+
+        <div class="method-heading">
+          <a href="#M000055" class="method-signature">
+          <span class="method-name">max_packet_size</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the max packet size for the endpoing
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000055-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000055-source">
+<pre>
+/*
+ * Returns the max packet size for the endpoing
+ */
+VALUE endpoint_max_packet_size(VALUE self)
+{
+  struct usb_endpoint_descriptor* e;
+  Data_Get_Struct(self, struct usb_endpoint_descriptor, e);
+
+  return INT2NUM(0x07FF &amp; e-&gt;wMaxPacketSize);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000050" class="method-detail">
+        <a name="M000050"></a>
+
+        <div class="method-heading">
+          <a href="#M000050" class="method-signature">
+          <span class="method-name">next_interrupt</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Blocks until the next interrupt is available and then returns it as a ruby
+character string.
+</p>
+<p>
+This is the preferred way to get interrupt data and should be used within a
+<a href="Endpoint.html#M000049">listen_for_interrupts</a> block. It is
+possible to call next interrupt after a <a
+href="Endpoint.html#M000049">listen_for_interrupts</a> block has ended (it
+will return interrupts that were in the queue but never processed).
+Obviously though, if you call <a
+href="Endpoint.html#M000050">next_interrupt</a> outside of a
+listen_for_interrupt block and the queue is empty, it will block forever.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000050-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000050-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 278</span>
+278:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">next_interrupt</span>
+279:       <span class="ruby-keyword kw">while</span>(<span class="ruby-value">1</span>)
+280:         <span class="ruby-identifier">val</span> = <span class="ruby-identifier">next_interrupt_or_nil</span>
+281:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">val</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">nil?</span>
+282:       <span class="ruby-keyword kw">end</span>
+283:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
+
+        <div class="method-heading">
+          <a href="#M000059" class="method-signature">
+          <span class="method-name">next_interrupt_or_nil</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the next available interrupt as a ruby string or returns nil if no
+interrupt is currentl available
+</p>
+<p>
+This function should generally be used with a <a
+href="Endpoint.html#M000049">listen_for_interrupts</a> block. It is
+possible to call it after the block has ended and return interrupts that
+were received while the block was open but not porcessed.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000059-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000059-source">
+<pre>
+/*
+ * Returns the next available interrupt as a ruby string or returns nil if no
+ * interrupt is currentl available
+ *
+ * This function should generally be used with a listen_for_interrupts block.
+ * It is possible to call it after the block has ended and return interrupts
+ * that were received while the block was open but not porcessed.
+ */
+VALUE endpoint_next_interrupt_or_nil(VALUE self)
+{
+  struct interrupt_result_list* list;
+  if(rb_iv_get(self, &quot;@result_list&quot;) == Qnil) return Qnil;
+  Data_Get_Struct(rb_iv_get(self,&quot;@result_list&quot;), struct interrupt_result_list, list);
+  if(list-&gt;head == NULL) {
+    return Qnil;
+  }
+  struct interrupt_result_list_entry* data = list-&gt;head;
+  pthread_mutex_lock(&amp;(list-&gt;mutex));
+  list-&gt;head = list-&gt;head-&gt;next;
+  if(list-&gt;head == NULL) {
+    list-&gt;tail = NULL;
+  }
+  pthread_mutex_unlock(&amp;(list-&gt;mutex));
+  if(data-&gt;data_size &lt; 0) {
+    //an error has occured
+    raise_usb_error();
+  }
+
+  VALUE result = rb_str_new(data-&gt;data, data-&gt;data_size);
+  return result;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000054" class="method-detail">
+        <a name="M000054"></a>
+
+        <div class="method-heading">
+          <a href="#M000054" class="method-signature">
+          <span class="method-name">number</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the number of the endpoint. Note that it&#8217;s possible for 2
+endpoints to share the same endpoint number (one input endpoint, one output
+endpoint).
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000054-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000054-source">
+<pre>
+/*
+ * Returns the number of the endpoint.  Note that it's possible for 2 endpoints
+ * to share the same endpoint number (one input endpoint, one output endpoint).
+ */
+VALUE endpoint_number(VALUE self)
+{
+  struct usb_endpoint_descriptor* e;
+  Data_Get_Struct(self, struct usb_endpoint_descriptor, e);
+  return INT2NUM(USB_ENDPOINT_ADDRESS_MASK &amp; e-&gt;bEndpointAddress);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000052" class="method-detail">
+        <a name="M000052"></a>
+
+        <div class="method-heading">
+          <a href="#M000052" class="method-signature">
+          <span class="method-name">output?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if the endpoint is an output endpoint (input in this cases,
+means from the perspective of the host so output endpoints transmit data
+from the computer to usb devices
+</p>
+<p>
+Control endpoints return false.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000052-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000052-source">
+<pre>
+/*
+ * Returns true if the endpoint is an output endpoint (input in this cases, means
+ * from the perspective of the host so output endpoints transmit data from the
+ * computer to usb devices
+ *
+ * Control endpoints return false.
+ */
+VALUE endpoint_is_output(VALUE self)
+{
+  struct usb_endpoint_descriptor* e;
+  Data_Get_Struct(self, struct usb_endpoint_descriptor, e);
+  if((e-&gt;bmAttributes &amp; USB_ENDPOINT_TYPE_MASK) == USB_ENDPOINT_TYPE_CONTROL)
+    return Qfalse;
+  if(USB_ENDPOINT_DIR_MASK &amp; e-&gt;bEndpointAddress)
+    return Qfalse;
+  else
+    return Qtrue;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000057" class="method-detail">
+        <a name="M000057"></a>
+
+        <div class="method-heading">
+          <a href="#M000057" class="method-signature">
+          <span class="method-name">start_interrupt_listening</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Under most circustances it&#8217;s better to use <a
+href="Endpoint.html#M000049">listen_for_interrupts</a> than use this
+methods (just because it ensure that the device is closed when you&#8217;re
+done. But this starts a device listening, and from there you can use <a
+href="Endpoint.html#M000050">next_interrupt</a> to get the data. You must
+call interrupt_close if you call interrupt_open
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000057-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000057-source">
+<pre>
+/*
+ * Under most circustances it's better to use listen_for_interrupts than use
+ * this methods (just because it ensure that the device is closed when you're
+ * done.  But this starts a device listening, and from there you can use
+ * next_interrupt to get the data.  You must call interrupt_close if you call
+ * interrupt_open
+ */
+VALUE endpoint_start_listening(VALUE self)
+{
+  struct usb_endpoint_descriptor* e;
+  Data_Get_Struct(self, struct usb_endpoint_descriptor, e);
+  struct usb_interface_descriptor* interface;
+  Data_Get_Struct(rb_iv_get(self,&quot;@interface&quot;), struct usb_interface_descriptor, interface);
+  struct interrupt_result_list* list;
+  if(rb_iv_get(self, &quot;@result_list&quot;) == Qnil) {
+    // this initializes the structure the thread will use to communicate
+    list = malloc(sizeof(struct interrupt_result_list));
+    list-&gt;head = NULL;
+    list-&gt;tail = NULL;
+    pthread_mutex_init(&amp;list-&gt;mutex, 0);
+    rb_iv_set(self, &quot;@result_list&quot;, Data_Wrap_Struct(rb_cObject, NULL, free_interrupt_list, list));
+  } else {
+    Data_Get_Struct(rb_iv_get(self,&quot;@result_list&quot;), struct interrupt_result_list, list);
+  }
+  Data_Get_Struct(rb_iv_get(self,&quot;@interface&quot;), struct usb_interface_descriptor, interface);
+
+
+  ENSURE_OPEN_BEGIN(rb_iv_get(self, &quot;@device&quot;));
+  if(usb_claim_interface(handle, interface-&gt;bInterfaceNumber) &lt; 0) {
+    ENSURE_OPEN_END;
+    raise_usb_error();
+  }
+  pthread_t* thread1 = malloc(sizeof(pthread_t));
+  int ret;
+  struct interrupt_thread_parameters* thread_params = malloc(sizeof(struct interrupt_thread_parameters));
+  thread_params-&gt;bEndpointAddress = e-&gt;bEndpointAddress;
+  thread_params-&gt;wMaxPacketSize = e-&gt;wMaxPacketSize;
+  thread_params-&gt;handle = handle;
+  thread_params-&gt;list = list;
+  ret = pthread_create(thread1, NULL, test_thread, thread_params);
+  rb_iv_set(self, &quot;@thread&quot;, Data_Wrap_Struct(rb_cObject, NULL, NULL, thread1));
+  rb_iv_set(rb_iv_get(self, &quot;@interface&quot;), &quot;@claimed&quot;, Qtrue);
+  return Qnil;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
+
+        <div class="method-heading">
+          <a href="#M000058" class="method-signature">
+          <span class="method-name">stop_interrupt_listening</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Under most circumstances it&#8217;s better to use listen_for_interrputs
+than this method. But if you call start_listening you must call
+stop_listening
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000058-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000058-source">
+<pre>
+/* 
+ * Under most circumstances it's better to use listen_for_interrputs than this
+ * method.  But if you call start_listening you must call stop_listening
+ */
+VALUE endpoint_stop_listening(VALUE self)
+{
+  char error_occured = 0;
+  struct usb_dev_handle *handle;
+  Data_Get_Struct(rb_iv_get(rb_iv_get(self, &quot;@device&quot;),&quot;@open_handle&quot;), struct usb_dev_handle, handle);
+  struct usb_interface_descriptor* interface;
+  
+  Data_Get_Struct(rb_iv_get(self,&quot;@interface&quot;), struct usb_interface_descriptor, interface);
+  pthread_t* thread;
+  Data_Get_Struct(rb_iv_get(self, &quot;@thread&quot;), pthread_t, thread);
+  
+  pthread_cancel(*thread);
+  free(thread);
+  rb_iv_set(self, &quot;@thread&quot;, Qnil);
+
+  if(usb_release_interface(handle, interface-&gt;bInterfaceNumber) &lt; 0) {
+    error_occured = 1;
+  }
+  rb_iv_set(rb_iv_get(self, &quot;@interface&quot;), &quot;@claimed&quot;, Qfalse);
+  device_close(rb_iv_get(self, &quot;@device&quot;));
+  if(error_occured)
+    raise_usb_error();
+  return Qnil;
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000048" class="method-detail">
+        <a name="M000048"></a>
+
+        <div class="method-heading">
+          <a href="#M000048" class="method-signature">
+          <span class="method-name">to_s</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000048-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000048-source">
+<pre>
+     <span class="ruby-comment cmt"># File libusb.rb, line 244</span>
+244:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
+245:       <span class="ruby-identifier">direction</span> = <span class="ruby-value str">&quot;&quot;</span>
+246:       <span class="ruby-identifier">direction</span> = <span class="ruby-value str">&quot;input&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">input?</span>
+247:       <span class="ruby-identifier">direction</span> = <span class="ruby-value str">&quot;output&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">output?</span>
+248:       <span class="ruby-keyword kw">return</span> <span class="ruby-node">&quot;Type #{type} #{direction} Number #{number} MaxPacSize #{max_packet_size} interval #{interval}&quot;</span>
+249:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000051" class="method-detail">
+        <a name="M000051"></a>
+
+        <div class="method-heading">
+          <a href="#M000051" class="method-signature">
+          <span class="method-name">type</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the type of endpoint as a <a
+href="../CMacroValue.html">CMacroValue</a>. Types of endpoints include:
+</p>
+<p>
+USB_ENDPOINT_TYPE_CONTROL, USB_ENDPOINT_TYPE_ISOCHRONOUS,
+USB_ENDPOINT_TYPE_BULK, USB_ENDPOINT_TYPE_INTERRUPT
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000051-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000051-source">
+<pre>
+/*
+ * Returns the type of endpoint as a CMacroValue.  Types of endpoints include:
+ *
+ * USB_ENDPOINT_TYPE_CONTROL, USB_ENDPOINT_TYPE_ISOCHRONOUS, USB_ENDPOINT_TYPE_BULK, 
+ * USB_ENDPOINT_TYPE_INTERRUPT
+ */
+VALUE endpoint_type(VALUE self)
+{
+  struct usb_endpoint_descriptor* e;
+  Data_Get_Struct(self, struct usb_endpoint_descriptor, e);
+  return MACRO_MAPPED_VALUE(cDevice, &quot;endpoint_types&quot;, e-&gt;bmAttributes &amp; USB_ENDPOINT_TYPE_MASK);
+}
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

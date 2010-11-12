@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>find_usage_named (USB::Usage)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File libusb.rb, line 324</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-constant">Usage</span>.<span class="ruby-identifier">find_usage_named</span>(<span class="ruby-identifier">regex</span>)
+      <span class="ruby-identifier">file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">&quot;usages.json&quot;</span>)
+      <span class="ruby-identifier">string</span> = <span class="ruby-identifier">file</span>.<span class="ruby-identifier">readlines</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&quot;</span>)
+      <span class="ruby-identifier">result</span> = <span class="ruby-constant">SafeJSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">string</span>)
+      <span class="ruby-identifier">strings_list</span> = []
+      <span class="ruby-identifier">result</span>.<span class="ruby-identifier">each_pair</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">page_num</span>, <span class="ruby-identifier">page</span><span class="ruby-operator">|</span> <span class="ruby-identifier">page</span>.<span class="ruby-identifier">each_pair</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">usage_num</span>, <span class="ruby-identifier">usage_name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">strings_list</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">page_num</span>.<span class="ruby-identifier">to_i</span>(<span class="ruby-value">16</span>), <span class="ruby-identifier">usage_num</span>.<span class="ruby-identifier">to_i</span>(<span class="ruby-value">16</span>), <span class="ruby-node">&quot;#{page[&quot;name&quot;]}::#{usage_name}&quot;</span>] <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">usage_num</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;name&quot;</span>} }
+      <span class="ruby-identifier">usage_nums</span> = <span class="ruby-identifier">strings_list</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">each</span><span class="ruby-operator">|</span> <span class="ruby-identifier">each</span>[<span class="ruby-value">2</span>] <span class="ruby-operator">=~</span> <span class="ruby-identifier">regex</span> }
+      <span class="ruby-keyword kw">return</span> <span class="ruby-constant">Usage</span>.<span class="ruby-identifier">create_usage</span>(<span class="ruby-identifier">usage_nums</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">usage_nums</span>[<span class="ruby-value">1</span>]);
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
